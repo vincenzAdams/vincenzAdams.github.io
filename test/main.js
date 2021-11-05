@@ -1,3 +1,5 @@
+//to add tickers to the table, you have to update the array, add the stream, and add the event.
+
 var tickerArray = ["ADA", "ETH", "BTC"];
 var arrayLength = tickerArray.length;
 
