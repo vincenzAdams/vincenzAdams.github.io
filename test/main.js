@@ -11,6 +11,19 @@ let dogeStream = new WebSocket("wss://stream.binance.com:9443/ws/dogeusdt@trade"
 let shibStream = new WebSocket("wss://stream.binance.com:9443/ws/shibusdt@trade");
 let manaStream = new WebSocket("wss://stream.binance.com:9443/ws/manausdt@trade");
 
+// var streamArray = [adaStream, ethStream, btcStream, solStream, dogeStream, shibStream, manaStream];
+// function displayPrice(array){
+//     var arrayLen = array.length;
+//     for (i = 0; i < arrayLen; i++){
+//         var tickerId = tickerArray[i].toLowerCase();
+//         array[i].onmessage = (event) =>{
+//             let object = JSON.parse(event.data);
+//             document.getElementById(tickerId).innerText = "$ " + parseFloat(object.p).toLocaleString();
+//             showPctChange(tickerId);
+//         }
+//     }
+// }
+
 adaStream.onmessage = (event) => {
     let adaObject = JSON.parse(event.data);
     document.getElementById("ada").innerText = "$ " + parseFloat(adaObject.p).toLocaleString();
