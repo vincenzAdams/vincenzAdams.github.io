@@ -85,13 +85,13 @@ var showPctChange = function(ticker){
         displayedPercentage.innerText = changePercent + " %" ;
         changePercent < 0 ? displayedPercentage.style.color="red" : displayedPercentage.style.color="green";
         if (changePercent > 5){
-            displayedPercentage.classList.add("success");
-            displayedPercentage.previousSibling.classList.add("success");
-            displayedPercentage.previousSibling.previousSibling.classList.add("success");
+            displayedPercentage.classList.add("table-success");
+            displayedPercentage.previousSibling.classList.add("table-success");
+            displayedPercentage.previousSibling.previousSibling.classList.add("table-success");
         } else if(changePercent < -5){
-            displayedPercentage.classList.add("danger");
-            displayedPercentage.previousSibling.classList.add("danger");
-            displayedPercentage.previousSibling.previousSibling.classList.add("danger");
+            displayedPercentage.classList.add("table-danger");
+            displayedPercentage.previousSibling.classList.add("table-danger");
+            displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
         }
     }
     request.send();

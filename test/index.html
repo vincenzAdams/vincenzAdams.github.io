@@ -4,25 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=w3s, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="main.js"></script>
     <title>Portfolio</title>
-    <style>
-        th{
-            font-size: 25px;
-        }
-    </style>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
+    <br><br>
     <div class="container">
-        <table id="cryptoTable" class="table table-bordered table-condensed table-hover" style="margin-top: 25px;">
-            <tr>
-                <th>Symbol</th>
-                <th>Price (USD)</th>
-                <th>Percent Change (24hr)</th>
-            </tr>
+        <table id="cryptoTable" class="table table-hover table-bordered" style="padding-left: 25px; padding-right: 25px;">
+            <thead class="thead-light">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Price (USD)</th>
+                    <th>Percent Change (24hr)</th>
+                </tr>
+            </thead>
         </table>
     </div>
 </body>
