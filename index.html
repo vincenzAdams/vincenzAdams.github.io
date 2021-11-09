@@ -12,6 +12,84 @@
     <title>Portfolio</title>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
+    <div class="container">
+        <h1>Alert Conditions</h1>
+        <br><br>
+        <form>
+            <div class="row">
+                <div class="chosen-select col-sm-2">
+                    <select id="currency" class="chose-select form-control"></select>
+                </div>
+                <div class="chosen-select col-sm-2">
+                    <select id="alerton" class="chosen-select form-control">
+                        <option value="price">Price</option>
+                    </select>
+                </div>
+                <div class="chosen-select col-sm-2">
+                    <select id="currencyType" class="chosen-select form-control">
+                        <option value="USDT">USDT</option>
+                        <option value="Native">Native</option>
+                    </select>
+                </div>
+                <div class="chosen-select col-sm-2">
+                    <select id="alertOptions" class="chosen-select form-control">
+                        <option value="gte">Greater Than</option>
+                        <option value="lte">Less Than</option>
+                        <option value="ite">Inside Channel</option>
+                        <option value="ote">Outside Channel</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <input class="form-control" type="text" id="priceUSD1" placeholder="Price 1 (USD)">
+                </div>
+                <div class="form-group col-sm-2">
+                    <input class="form-control" type="text" id="priceBTC1" placeholder="Price 1 (Native)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <input class="form-control" type="text" id="priceUSD2" placeholder="Price 2 (USD)">
+                </div>
+                <div class="form-group col-sm-2">
+                    <input class="form-control" type="text" id="priceBTC2" placeholder="Price 2 (Native)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <input type="button" class="btn btn-dark add-row form-control" value="Add Condition">
+                </div>
+            </div>
+        </form>
+        <br><br>
+        <table id="dptable" class="table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Symbol</th>
+                    <th>Alert On</th>
+                    <th>Currency</th>
+                    <th>Condition</th>
+                    <th>Price 1</th>
+                    <th>Price 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" name="record"></td>
+                    <td>BTCUSDT</td>
+                    <td>Price</td>
+                    <td>USDT</td>
+                    <td>Greater Than</td>
+                    <td>70000</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-danger delete-row">Delete Row</button>
+    </div>
     <br><br>
     <div class="container">
         <table id="cryptoTable" class="table table-hover table-bordered" style="padding-left: 25px; padding-right: 25px;">
@@ -25,4 +103,22 @@
         </table>
     </div>
 </body>
+<script>
+    getAllSymbols();
+
+    function getAllSymbols(){
+        var ourRequest1 = new XMLHttpRequest();
+        var url = "https://api.binance.com/api/v3/ticker/price";
+        ourRequest1.open("GET", url, true);
+        ourRequest1.onload = () =>{
+            var ourData = JSON.parse(ourRequest1.responseText);
+            var optionsAsString ="";
+            for(i=0;i<ourData1.length;i++){
+                optionsAsString += "<option value='" + ourData[i]["symbol"] + "'>" + ourData[i]["symbol"] + "</option>";
+            }
+            $("#currency").append(optionsAsString);
+        }
+        ourRequest1.send();
+    }
+</script>
 </html>
