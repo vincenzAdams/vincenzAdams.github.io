@@ -1,15 +1,57 @@
 //to add tickers to the table, you have to update the array, add the stream, and add the event.
 
+$(document).ready(function(){
+    generateRows(tickerArray, arrayLength);
+});
+
 var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 var arrayLength = tickerArray.length;
 
-let adaStream = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade");
-let ethStream = new WebSocket("wss://stream.binance.com:9443/ws/ethusdt@trade");
-let btcStream = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
-let solStream = new WebSocket("wss://stream.binance.com:9443/ws/solusdt@trade");
-let dogeStream = new WebSocket("wss://stream.binance.com:9443/ws/dogeusdt@trade");
-let shibStream = new WebSocket("wss://stream.binance.com:9443/ws/shibusdt@trade");
-let manaStream = new WebSocket("wss://stream.binance.com:9443/ws/manausdt@trade");
+let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
+
+function loadPriceColumn2(){
+  allStreams.onmessage = (event) => {
+      let message = JSON.parse(event.data);
+      switch (message.s){
+          case "ADAUSDT":
+              document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("ada");
+              break;
+          case "ETHUSDT":
+              document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("eth");
+              break;
+          case "BTCUSDT":
+              document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("btc");
+              break;
+          case "SOLUSDT":
+              document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("sol");
+              break;
+          case "DOGEUSDT":
+              document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("doge");
+              break;
+          case "SHIBUSDT":
+              document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
+              showPctChange("shib");
+              break;
+          case "MANAUSDT":
+              document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              showPctChange("mana");
+              break;  
+        }
+    }
+}
+
+// let adaStream = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade");
+// let ethStream = new WebSocket("wss://stream.binance.com:9443/ws/ethusdt@trade");
+// let btcStream = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
+// let solStream = new WebSocket("wss://stream.binance.com:9443/ws/solusdt@trade");
+// let dogeStream = new WebSocket("wss://stream.binance.com:9443/ws/dogeusdt@trade");
+// let shibStream = new WebSocket("wss://stream.binance.com:9443/ws/shibusdt@trade");
+// let manaStream = new WebSocket("wss://stream.binance.com:9443/ws/manausdt@trade");
 
 // var streamArray = [adaStream, ethStream, btcStream, solStream, dogeStream, shibStream, manaStream];
 // function displayPrice(array){
@@ -23,51 +65,54 @@ let manaStream = new WebSocket("wss://stream.binance.com:9443/ws/manausdt@trade"
 //         }
 //     }
 // }
+// function loadPriceColumn(){
+//     adaStream.onmessage = (event) => {
+//         let adaObject = JSON.parse(event.data);
+//         document.getElementById("ada").textContent = "$ " + parseFloat(adaObject.p).toLocaleString();
+//         showPctChange("ada");
+//     }
+//     ethStream.onmessage = (event) => {
+//         let ethObject = JSON.parse(event.data);
+//         document.getElementById("eth").textContent = "$ " + parseFloat(ethObject.p).toLocaleString();
+//         showPctChange("eth");
+//     }
+//     btcStream.onmessage = (event) => {
+//         let btcObject = JSON.parse(event.data);
+//         document.getElementById("btc").textContent = "$ " + parseFloat(btcObject.p).toLocaleString();
+//         showPctChange("btc");
+//     }
 
-adaStream.onmessage = (event) => {
-    let adaObject = JSON.parse(event.data);
-    document.getElementById("ada").innerText = "$ " + parseFloat(adaObject.p).toLocaleString();
-    showPctChange("ada");
-}
-ethStream.onmessage = (event) => {
-    let ethObject = JSON.parse(event.data);
-    document.getElementById("eth").innerText = "$ " + parseFloat(ethObject.p).toLocaleString();
-    showPctChange("eth");
-}
-btcStream.onmessage = (event) => {
-    let btcObject = JSON.parse(event.data);
-    document.getElementById("btc").innerText = "$ " + parseFloat(btcObject.p).toLocaleString();
-    showPctChange("btc");
-}
+//     solStream.onmessage = (event) => {
+//         let solObject = JSON.parse(event.data);
+//         document.getElementById("sol").textContent = "$ " + parseFloat(solObject.p).toLocaleString();
+//         showPctChange("sol");
+//     }
 
-solStream.onmessage = (event) => {
-    let solObject = JSON.parse(event.data);
-    document.getElementById("sol").innerText = "$ " + parseFloat(solObject.p).toLocaleString();
-    showPctChange("sol");
-}
+//     dogeStream.onmessage = (event) => {
+//         let dogeObject = JSON.parse(event.data);
+//         document.getElementById("doge").textContent = "$ " + parseFloat(dogeObject.p).toLocaleString();
+//         showPctChange("doge");
+//     }
 
-dogeStream.onmessage = (event) => {
-    let dogeObject = JSON.parse(event.data);
-    document.getElementById("doge").innerText = "$ " + parseFloat(dogeObject.p).toLocaleString();
-    showPctChange("doge");
-}
+//     shibStream.onmessage = (event) => {
+//         let shibObject = JSON.parse(event.data);
+//         document.getElementById("shib").textContent = "$ " + parseFloat(shibObject.p);
+//         showPctChange("shib");
+//     }
 
-shibStream.onmessage = (event) => {
-    let shibObject = JSON.parse(event.data);
-    document.getElementById("shib").innerText = "$ " + parseFloat(shibObject.p);
-    showPctChange("shib");
-}
+//     manaStream.onmessage = (event) => {
+//         let manaObject = JSON.parse(event.data);
+//         document.getElementById("mana").textContent = "$ " + parseFloat(manaObject.p).toLocaleString();
+//         showPctChange("mana");
+//     }
+// }
 
-manaStream.onmessage = (event) => {
-    let manaObject = JSON.parse(event.data);
-    document.getElementById("mana").innerText = "$ " + parseFloat(manaObject.p).toLocaleString();
-    showPctChange("mana");
-}
 function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
     for ( i = 0; i < length; i++){
         tableEL.innerHTML += "<tr><td>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
     }
+    loadPriceColumn2();
 }
 
 var showPctChange = function(ticker){
@@ -77,12 +122,12 @@ var showPctChange = function(ticker){
     query += "?symbol=" + ticker + "USDT";
     var url = baseUrl + query;
     var request = new XMLHttpRequest();
-    request.open("GET", url);
+    request.open("GET", url, true);
     request.onload = () => {
         var jsonObj = JSON.parse(request.responseText);
         var changePercent = jsonObj.priceChangePercent;
         var displayedPercentage = document.getElementById(ticker.toLowerCase() + "PctChange");
-        displayedPercentage.innerText = changePercent + " %" ;
+        displayedPercentage.textContent = changePercent + " %" ;
         changePercent < 0 ? displayedPercentage.style.color="red" : displayedPercentage.style.color="green";
         if (changePercent > 5){
             displayedPercentage.classList.add("table-success");
