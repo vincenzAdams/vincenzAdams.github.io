@@ -1,45 +1,47 @@
-//to add tickers to the table, you have to update the array, add the stream, and add the event.
+//to add tickers to the table, you have to update the array, add the stream, and add the case to the switch statement.
 
 var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 var arrayLength = tickerArray.length;
 
 let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
 
-function loadPriceColumn2(){
+function loadPriceColumn(){
   allStreams.onmessage = (event) => {
       let message = JSON.parse(event.data);
       switch (message.s){
           case "ADAUSDT":
-              document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("ada").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("ada");
               break;
           case "ETHUSDT":
-              document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("eth").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("eth");
               break;
           case "BTCUSDT":
-              document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("btc").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("btc");
               break;
           case "SOLUSDT":
-              document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("sol").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("sol");
               break;
           case "DOGEUSDT":
-              document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("doge").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("doge");
               break;
           case "SHIBUSDT":
-              document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
+              document.getElementById("shib").innerHTML = "<span>$ " + parseFloat(message.p) + "</span>";
               showPctChange("shib");
               break;
           case "MANAUSDT":
-              document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("mana").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
               showPctChange("mana");
               break;  
         }
     }
 }
+
+//OLD CODE
 
 // let adaStream = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade");
 // let ethStream = new WebSocket("wss://stream.binance.com:9443/ws/ethusdt@trade");
@@ -108,7 +110,7 @@ function generateRows(array, length){
     for ( i = 0; i < length; i++){
         tableEL.innerHTML += "<tr><td>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
     }
-    loadPriceColumn2();
+    loadPriceColumn();
 }
 
 var showPctChange = function(ticker){
