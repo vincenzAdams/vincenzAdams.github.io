@@ -1,9 +1,5 @@
 //to add tickers to the table, you have to update the array, add the stream, and add the event.
 
-$(document).ready(function(){
-    generateRows(tickerArray, arrayLength);
-});
-
 var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 var arrayLength = tickerArray.length;
 
