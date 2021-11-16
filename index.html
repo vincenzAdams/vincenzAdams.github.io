@@ -10,10 +10,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="main.js"></script>
     <title>Price Change Table</title>
+    <style>
+        body{
+            background-color: gray;
+        }
+    </style>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
     <div class="container">
-        <table id="cryptoTable" class="table table-dark table-hover table-bordered" style="padding-left: 25px; padding-right: 25px;">
+        <br><br>
+        <table id="cryptoTable" class="table table-dark table-striped table-hover table-bordered" style="padding-left: 25px; padding-right: 25px;">
             <thead class="thead-light">
                 <tr>
                     <th>Symbol</th>
