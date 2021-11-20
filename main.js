@@ -108,7 +108,7 @@ function loadPriceColumn(){
 function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
     for ( i = 0; i < length; i++){
-        tableEL.innerHTML += "<tr><td><kdb><span id='" + array[i] + "badge'></span></kbd>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
+        tableEL.innerHTML += "<tr><td><span id='" + array[i] + "badge'></span>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
     }
     loadPriceColumn();
 }
@@ -132,11 +132,14 @@ var showPctChange = function(ticker){
             displayedPercentage.classList.add("table-success");
             displayedPercentage.previousSibling.classList.add("table-success");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-success");
+            momentumBadge.textContent = "HOT";
+            momentumBadge.classList.add("badge");
+            momentumBadge.classList.add("badge-danger");
         } else if(changePercent < -5){
             displayedPercentage.classList.add("table-danger");
             displayedPercentage.previousSibling.classList.add("table-danger");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
-            momentumBadge.classList.add("glyphicon", "glyphicon-fire");
+            
         }
     }
     request.send();
