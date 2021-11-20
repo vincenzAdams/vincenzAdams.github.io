@@ -10,31 +10,31 @@ function loadPriceColumn(){
       let message = JSON.parse(event.data);
       switch (message.s){
           case "ADAUSDT":
-              document.getElementById("ada").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("ada");
               break;
           case "ETHUSDT":
-              document.getElementById("eth").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("eth");
               break;
           case "BTCUSDT":
-              document.getElementById("btc").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("btc");
               break;
           case "SOLUSDT":
-              document.getElementById("sol").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("sol");
               break;
           case "DOGEUSDT":
-              document.getElementById("doge").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("doge");
               break;
           case "SHIBUSDT":
-              document.getElementById("shib").innerHTML = "<span>$ " + parseFloat(message.p) + "</span>";
+              document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
               showPctChange("shib");
               break;
           case "MANAUSDT":
-              document.getElementById("mana").innerHTML = "<span>$ " + parseFloat(message.p).toLocaleString() + "</span>";
+              document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
               showPctChange("mana");
               break;  
         }
@@ -108,7 +108,7 @@ function loadPriceColumn(){
 function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
     for ( i = 0; i < length; i++){
-        tableEL.innerHTML += "<tr><td>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
+        tableEL.innerHTML += "<tr><td><kdb><span id='" + array[i] + "badge'></span></kbd>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
     }
     loadPriceColumn();
 }
@@ -125,6 +125,7 @@ var showPctChange = function(ticker){
         var jsonObj = JSON.parse(request.responseText);
         var changePercent = jsonObj.priceChangePercent;
         var displayedPercentage = document.getElementById(ticker.toLowerCase() + "PctChange");
+        var momentumBadge = document.getElementById(ticker + "badge");
         displayedPercentage.textContent = changePercent + " %" ;
         changePercent < 0 ? displayedPercentage.style.color="red" : displayedPercentage.style.color="green";
         if (changePercent > 5){
@@ -135,6 +136,7 @@ var showPctChange = function(ticker){
             displayedPercentage.classList.add("table-danger");
             displayedPercentage.previousSibling.classList.add("table-danger");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
+            momentumBadge.classList.add("glyphicon", "glyphicon-fire");
         }
     }
     request.send();
