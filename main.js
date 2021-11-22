@@ -4,6 +4,7 @@ var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 var arrayLength = tickerArray.length;
 
 let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
+// let stream2 = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@kline_1m");
 
 function loadPriceColumn(){
   allStreams.onmessage = (event) => {
@@ -39,6 +40,11 @@ function loadPriceColumn(){
               break;  
         }
     }
+
+    // stream2.onmessage = (event) => {
+    //     let message = JSON.parse(event.data);
+    //     console.log(message);
+    // }
 }
 
 //OLD CODE
@@ -128,17 +134,18 @@ var showPctChange = function(ticker){
         var momentumBadge = document.getElementById(ticker + "badge");
         displayedPercentage.textContent = changePercent + " %" ;
         changePercent < 0 ? displayedPercentage.style.color="red" : displayedPercentage.style.color="green";
-        if (changePercent > 5){
+        if (changePercent > 3){
             displayedPercentage.classList.add("table-success");
             displayedPercentage.previousSibling.classList.add("table-success");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-success");
-            momentumBadge.textContent = "HOT";
-            momentumBadge.classList.add("badge");
-            momentumBadge.classList.add("badge-danger");
-        } else if(changePercent < -5){
+            momentumBadge.textContent = " ";
+            momentumBadge.classList.add("badge", "badge-danger", "fas", "fa-fire");
+        } else if(changePercent < -3){
             displayedPercentage.classList.add("table-danger");
             displayedPercentage.previousSibling.classList.add("table-danger");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
+            momentumBadge.textContent = " ";
+            momentumBadge.classList.add("badge", "badge-primary", "fas", "fa-cubes");
             
         }
     }
