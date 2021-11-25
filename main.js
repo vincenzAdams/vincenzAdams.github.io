@@ -8,44 +8,51 @@ let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/e
 
 function loadPriceColumn(){
   allStreams.onmessage = (event) => {
+      
       let message = JSON.parse(event.data);
       switch (message.s){
           case "ADAUSDT":
               document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("ada");
+              
               break;
           case "ETHUSDT":
               document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("eth");
+            
               break;
           case "BTCUSDT":
               document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("btc");
+            
               break;
           case "SOLUSDT":
               document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("sol");
+            
               break;
           case "DOGEUSDT":
               document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("doge");
+              
               break;
           case "SHIBUSDT":
               document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
-              showPctChange("shib");
+              
               break;
           case "MANAUSDT":
               document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              showPctChange("mana");
+              
               break;  
         }
     }
-
     // stream2.onmessage = (event) => {
     //     let message = JSON.parse(event.data);
     //     console.log(message);
     // }
 }
+
+function loadPercentColumn(tickerArray){
+        for(i = 0; i < tickerArray.length; i++){
+            tickerArray[i] = tickerArray[i].toLowerCase();
+            showPctChange(tickerArray[i]);
+        } 
+    }
 
 //OLD CODE
 
@@ -113,10 +120,37 @@ function loadPriceColumn(){
 
 function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
+    
     for ( i = 0; i < length; i++){
-        tableEL.innerHTML += "<tr><td><span id='" + array[i] + "badge'></span>" + array[i] + "</td><td id='" + array[i].toLowerCase() + "'></td><td id='" + array[i].toLowerCase() + "PctChange'></td></tr>";
+        
+        // var currentSymbol = array[i];
+        // tableEL.innerHTML += "<tr data-toggle='collapse' data-target='#showData" + currentSymbol + "' class='clickable'><td><span id='" + currentSymbol + "badge'></span>" + " " + currentSymbol + "</td><td id='" + currentSymbol.toLowerCase() + "'></td><td id='" + currentSymbol.toLowerCase() + "PctChange'></td></tr><tr><td><div id='showData" + currentSymbol + "' class='collapse'>Fuck</div></td></tr>";
+
+        let currentSymbol = array[i];
+        //create row
+        let row = tableEL.insertRow();
+        row.setAttribute('id', 'row' + i);
+
+        //first td: badge and symbol
+        let cell1 = row.insertCell();
+        let badge = document.createElement('span');
+        badge.setAttribute('id', currentSymbol + 'badge');
+        cell1.appendChild(badge);
+        let tickerSymbol = document.createElement('span');
+        tickerSymbol.innerText = ' ' + currentSymbol;
+        cell1.appendChild(tickerSymbol);
+
+        //second td: price
+        let cell2 = row.insertCell();
+        cell2.setAttribute('id', currentSymbol.toLowerCase());
+
+        //third td: percent change
+        let cell3 = row.insertCell();
+        cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
     }
+
     loadPriceColumn();
+    loadPercentColumn(tickerArray);
 }
 
 var showPctChange = function(ticker){
@@ -134,18 +168,20 @@ var showPctChange = function(ticker){
         var momentumBadge = document.getElementById(ticker + "badge");
         displayedPercentage.textContent = changePercent + " %" ;
         changePercent < 0 ? displayedPercentage.style.color="red" : displayedPercentage.style.color="green";
-        if (changePercent > 3){
+        if (changePercent > 5){
             displayedPercentage.classList.add("table-success");
             displayedPercentage.previousSibling.classList.add("table-success");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-success");
             momentumBadge.textContent = " ";
-            momentumBadge.classList.add("badge", "badge-danger", "fas", "fa-fire");
-        } else if(changePercent < -3){
+            momentumBadge.classList.add("fab", "fa-gripfire")
+            momentumBadge.style.color="red";
+        } else if(changePercent < -5){
             displayedPercentage.classList.add("table-danger");
             displayedPercentage.previousSibling.classList.add("table-danger");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
             momentumBadge.textContent = " ";
-            momentumBadge.classList.add("badge", "badge-primary", "fas", "fa-cubes");
+            momentumBadge.classList.add("fas", "fa-cubes");
+            momentumBadge.style.color="blue";
             
         }
     }
