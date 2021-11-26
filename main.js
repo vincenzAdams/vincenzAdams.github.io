@@ -12,31 +12,24 @@ function loadPriceColumn(){
       switch (message.s){
           case "ADAUSDT":
               document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              
               break;
           case "ETHUSDT":
               document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
-            
               break;
           case "BTCUSDT":
               document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
-            
               break;
           case "SOLUSDT":
               document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
-            
               break;
           case "DOGEUSDT":
               document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              
               break;
           case "SHIBUSDT":
               document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
-              
               break;
           case "MANAUSDT":
               document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
-              
               break;  
         }
     }
