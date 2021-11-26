@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <script src="main.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Price Change Table</title>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
@@ -18,6 +21,10 @@
         <a class="navbar-brand" href="#">Vincent Adams</a>
     </nav>
     <div class="container">
+        <br><br>
+        <div class="well well-sm">
+            <p><code>//this table is generated using Binance websockets and the Binance API</code></p>
+        </div>
         <br><br>
         <table id="cryptoTable" class="table table-hover table-striped" style="padding-left: 25px; padding-right: 25px;">
             <thead class="thead-dark">
@@ -29,20 +36,5 @@
             </thead>
         </table>
     </div>
-    <script>
-        function showRSI(){
-        var RSI = require('technicalindicators').RSI;
-
-            var inputRSI = {
-                values: [127.75, 129.02, 132.75, 145.40, 148.98, 137.52, 147.38, 139.05, 137.23, 149.30, 162.45, 178.95, 200.35, 221.90, 243.23, 243.52, 286.42, 280.27, 277.35, 269.02, 263.23, 214.90],
-                period: 14
-            };
-            var expectedResult = [
-                86.41, 86.43, 89.65, 86.50, 84.96, 80.54, 77.56, 58.06
-            ];
-
-            return RSI.calculate(inputRSI);
-        }
-    </script>
 </body>
 </html>

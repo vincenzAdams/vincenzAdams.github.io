@@ -8,7 +8,6 @@ let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/e
 
 function loadPriceColumn(){
   allStreams.onmessage = (event) => {
-      
       let message = JSON.parse(event.data);
       switch (message.s){
           case "ADAUSDT":
@@ -41,10 +40,6 @@ function loadPriceColumn(){
               break;  
         }
     }
-    // stream2.onmessage = (event) => {
-    //     let message = JSON.parse(event.data);
-    //     console.log(message);
-    // }
 }
 
 function loadPercentColumn(tickerArray){
@@ -53,7 +48,6 @@ function loadPercentColumn(tickerArray){
             showPctChange(tickerArray[i]);
         } 
     }
-
 //OLD CODE
 
 // let adaStream = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade");
@@ -117,12 +111,12 @@ function loadPercentColumn(tickerArray){
 //         showPctChange("mana");
 //     }
 // }
-
 function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
     
-    for ( i = 0; i < length; i++){
+    for (i = 0; i < length; i++){
         
+        //OLD CODE
         // var currentSymbol = array[i];
         // tableEL.innerHTML += "<tr data-toggle='collapse' data-target='#showData" + currentSymbol + "' class='clickable'><td><span id='" + currentSymbol + "badge'></span>" + " " + currentSymbol + "</td><td id='" + currentSymbol.toLowerCase() + "'></td><td id='" + currentSymbol.toLowerCase() + "PctChange'></td></tr><tr><td><div id='showData" + currentSymbol + "' class='collapse'>Fuck</div></td></tr>";
 
@@ -131,7 +125,7 @@ function generateRows(array, length){
         let row = tableEL.insertRow();
         row.setAttribute('id', 'row' + i);
 
-        //first td: badge and symbol
+        //first column: badge and symbol
         let cell1 = row.insertCell();
         let badge = document.createElement('span');
         badge.setAttribute('id', currentSymbol + 'badge');
@@ -140,11 +134,11 @@ function generateRows(array, length){
         tickerSymbol.innerText = ' ' + currentSymbol;
         cell1.appendChild(tickerSymbol);
 
-        //second td: price
+        //second column: price
         let cell2 = row.insertCell();
         cell2.setAttribute('id', currentSymbol.toLowerCase());
 
-        //third td: percent change
+        //third column: percent change
         let cell3 = row.insertCell();
         cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
     }
