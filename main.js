@@ -108,15 +108,16 @@ function generateRows(array, length){
     var tableEL = document.getElementById("cryptoTable");
     
     for (i = 0; i < length; i++){
-        
         //OLD CODE
         // var currentSymbol = array[i];
         // tableEL.innerHTML += "<tr data-toggle='collapse' data-target='#showData" + currentSymbol + "' class='clickable'><td><span id='" + currentSymbol + "badge'></span>" + " " + currentSymbol + "</td><td id='" + currentSymbol.toLowerCase() + "'></td><td id='" + currentSymbol.toLowerCase() + "PctChange'></td></tr><tr><td><div id='showData" + currentSymbol + "' class='collapse'>Fuck</div></td></tr>";
-
         let currentSymbol = array[i];
         //create row
         let row = tableEL.insertRow();
         row.setAttribute('id', 'row' + i);
+        row.classList.add("clickable");
+        row.setAttribute('data-toggle', 'collapse');
+        row.setAttribute('data-target', '#showData' + currentSymbol);
 
         //first column: badge and symbol
         let cell1 = row.insertCell();
@@ -134,6 +135,14 @@ function generateRows(array, length){
         //third column: percent change
         let cell3 = row.insertCell();
         cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
+
+        let accordionRow = tableEL.insertRow();
+        let accordionDiv = document.createElement('div');
+        accordionDiv.setAttribute('id', 'showData' + currentSymbol);
+        accordionDiv.classList.add('collapse');
+        accordionRow.appendChild(accordionDiv);
+        accordionDiv.innerText = 'Some info about ' + currentSymbol + ' will go here.';
+
     }
 
     loadPriceColumn();

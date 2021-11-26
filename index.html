@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://static.cryptowat.ch/assets/scripts/embed.bundle.js"></script>
+    <style>
+        .chart-container{
+            width: 100%;
+            height: 400px;
+            text-align: center;
+        }
+    </style>
     <title>Price Change Table</title>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
@@ -32,9 +40,33 @@
                     <th>Symbol</th>
                     <th>Price (USD)</th>
                     <th>Percent Change (24hr)</th>
-                </tr>
-            </thead>
+                 </tr>
+             </thead>
         </table>
     </div>
+    <br>
+    <!-- <div id="chart-container"></div>
+    <script>
+        var chart = new cryptowatch.Embed('bitfinex', 'adausd', {
+                presetColorScheme: 'bushido', 
+                timePeriod: '1d',
+                width: 650,
+                customColorScheme: {
+                    bg: "000000",
+                    text: "b2b2b2",
+                    textStrong: "e5e5e5",
+                    textWeak: "7f7f7f",
+                    short: "FD4600",
+                    shortFill: "FF672C",
+                    long: "6290FF",
+                    longFill: "002782",
+                    cta: "363D52",
+                    ctaHighlight: "414A67",
+                    alert: "FFD506",
+                }
+            });
+            chart.mount('#chart-container');
+    </script> -->
+    <br><br>
 </body>
 </html>
