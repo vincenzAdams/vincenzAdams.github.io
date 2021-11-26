@@ -141,7 +141,7 @@ function generateRows(array, length){
         accordionDiv.setAttribute('id', 'showData' + currentSymbol);
         accordionDiv.classList.add('collapse');
         accordionRow.appendChild(accordionDiv);
-        accordionDiv.innerText = 'Some info about ' + currentSymbol + ' will go here.';
+        accordionDiv.innerText = `Some info about ${currentSymbol} will go here.`;
 
     }
 
