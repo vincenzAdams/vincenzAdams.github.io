@@ -41,86 +41,23 @@ function loadPercentColumn(tickerArray){
             showPctChange(tickerArray[i]);
         } 
     }
-//OLD CODE
 
-// let adaStream = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade");
-// let ethStream = new WebSocket("wss://stream.binance.com:9443/ws/ethusdt@trade");
-// let btcStream = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
-// let solStream = new WebSocket("wss://stream.binance.com:9443/ws/solusdt@trade");
-// let dogeStream = new WebSocket("wss://stream.binance.com:9443/ws/dogeusdt@trade");
-// let shibStream = new WebSocket("wss://stream.binance.com:9443/ws/shibusdt@trade");
-// let manaStream = new WebSocket("wss://stream.binance.com:9443/ws/manausdt@trade");
-
-// var streamArray = [adaStream, ethStream, btcStream, solStream, dogeStream, shibStream, manaStream];
-// function displayPrice(array){
-//     var arrayLen = array.length;
-//     for (i = 0; i < arrayLen; i++){
-//         var tickerId = tickerArray[i].toLowerCase();
-//         array[i].onmessage = (event) =>{
-//             let object = JSON.parse(event.data);
-//             document.getElementById(tickerId).innerText = "$ " + parseFloat(object.p).toLocaleString();
-//             showPctChange(tickerId);
-//         }
-//     }
-// }
-// function loadPriceColumn(){
-//     adaStream.onmessage = (event) => {
-//         let adaObject = JSON.parse(event.data);
-//         document.getElementById("ada").textContent = "$ " + parseFloat(adaObject.p).toLocaleString();
-//         showPctChange("ada");
-//     }
-//     ethStream.onmessage = (event) => {
-//         let ethObject = JSON.parse(event.data);
-//         document.getElementById("eth").textContent = "$ " + parseFloat(ethObject.p).toLocaleString();
-//         showPctChange("eth");
-//     }
-//     btcStream.onmessage = (event) => {
-//         let btcObject = JSON.parse(event.data);
-//         document.getElementById("btc").textContent = "$ " + parseFloat(btcObject.p).toLocaleString();
-//         showPctChange("btc");
-//     }
-
-//     solStream.onmessage = (event) => {
-//         let solObject = JSON.parse(event.data);
-//         document.getElementById("sol").textContent = "$ " + parseFloat(solObject.p).toLocaleString();
-//         showPctChange("sol");
-//     }
-
-//     dogeStream.onmessage = (event) => {
-//         let dogeObject = JSON.parse(event.data);
-//         document.getElementById("doge").textContent = "$ " + parseFloat(dogeObject.p).toLocaleString();
-//         showPctChange("doge");
-//     }
-
-//     shibStream.onmessage = (event) => {
-//         let shibObject = JSON.parse(event.data);
-//         document.getElementById("shib").textContent = "$ " + parseFloat(shibObject.p);
-//         showPctChange("shib");
-//     }
-
-//     manaStream.onmessage = (event) => {
-//         let manaObject = JSON.parse(event.data);
-//         document.getElementById("mana").textContent = "$ " + parseFloat(manaObject.p).toLocaleString();
-//         showPctChange("mana");
-//     }
-// }
 function generateRows(array, length){
+    
+    //get table element created in HTML document
     var tableEL = document.getElementById("cryptoTable");
     
     for (i = 0; i < length; i++){
-        //OLD CODE
-        // var currentSymbol = array[i];
-        // tableEL.innerHTML += "<tr data-toggle='collapse' data-target='#showData" + currentSymbol + "' class='clickable'><td><span id='" + currentSymbol + "badge'></span>" + " " + currentSymbol + "</td><td id='" + currentSymbol.toLowerCase() + "'></td><td id='" + currentSymbol.toLowerCase() + "PctChange'></td></tr><tr><td><div id='showData" + currentSymbol + "' class='collapse'>Fuck</div></td></tr>";
         let currentSymbol = array[i];
-        //create row
-        let row = tableEL.insertRow();
-        row.setAttribute('id', 'row' + i);
-        row.classList.add("clickable");
-        row.setAttribute('data-toggle', 'collapse');
-        row.setAttribute('data-target', '#showData' + currentSymbol);
+        //create row1
+        let row1 = tableEL.insertRow();
+        row1.setAttribute('id', 'row' + i); 
+        row1.classList.add("clickable"); 
+        row1.setAttribute('data-toggle', 'collapse');
+        row1.setAttribute('data-target', '#showData' + currentSymbol);
 
         //first column: badge and symbol
-        let cell1 = row.insertCell();
+        let cell1 = row1.insertCell(); //<td>
         let badge = document.createElement('span');
         badge.setAttribute('id', currentSymbol + 'badge');
         cell1.appendChild(badge);
@@ -129,22 +66,29 @@ function generateRows(array, length){
         cell1.appendChild(tickerSymbol);
 
         //second column: price
-        let cell2 = row.insertCell();
+        //price is loaded by loadPriceColumn() and uses this cell's id to insert the correct data
+        let cell2 = row1.insertCell();
         cell2.setAttribute('id', currentSymbol.toLowerCase());
 
         //third column: percent change
-        let cell3 = row.insertCell();
+        let cell3 = row1.insertCell();
         cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
 
+        //second row
         let accordionRow = tableEL.insertRow();
+        accordionRow.setAttribute('colspan', '3');
+        let cell4 = accordionRow.insertCell();
+        cell4.setAttribute('id', 'cell4' + currentSymbol)
+        cell4.setAttribute('colspan', '3');//make row all 3 columns
+        cell4.style.padding = '0px'; //removes extra padding from the bootstrap css
+        accordionRow.appendChild(cell4);
         let accordionDiv = document.createElement('div');
         accordionDiv.setAttribute('id', 'showData' + currentSymbol);
         accordionDiv.classList.add('collapse');
-        accordionRow.appendChild(accordionDiv);
+        cell4.appendChild(accordionDiv);
         accordionDiv.innerText = `Some info about ${currentSymbol} will go here.`;
 
     }
-
     loadPriceColumn();
     loadPercentColumn(tickerArray);
 }
