@@ -2,41 +2,42 @@
 
 var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 var arrayLength = tickerArray.length;
+var dataArray = [];
 
 let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
-// let stream2 = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@kline_1m");
 
 function loadPriceColumn(){
   allStreams.onmessage = (event) => {
       let message = JSON.parse(event.data);
+      let answer = parseFloat(message.p).toLocaleString();
       switch (message.s){
           case "ADAUSDT":
-              document.getElementById("ada").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("ada").textContent = `$${answer}`;
               break;
           case "ETHUSDT":
-              document.getElementById("eth").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("eth").textContent = `$${answer}`;
               break;
           case "BTCUSDT":
-              document.getElementById("btc").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("btc").textContent = `$${answer}`;
               break;
           case "SOLUSDT":
-              document.getElementById("sol").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("sol").textContent = `$${answer}`;
               break;
           case "DOGEUSDT":
-              document.getElementById("doge").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("doge").textContent = `$${answer}`;
               break;
           case "SHIBUSDT":
               document.getElementById("shib").textContent = "$ " + parseFloat(message.p);
               break;
           case "MANAUSDT":
-              document.getElementById("mana").textContent = "$ " + parseFloat(message.p).toLocaleString();
+              document.getElementById("mana").textContent = `$${answer}`;
               break;  
         }
     }
 }
 
 function loadPercentColumn(tickerArray){
-        for(i = 0; i < tickerArray.length; i++){
+        for(i = 0; i < arrayLength; i++){
             tickerArray[i] = tickerArray[i].toLowerCase();
             showPctChange(tickerArray[i]);
         } 
@@ -86,11 +87,11 @@ function generateRows(array, length){
         accordionDiv.setAttribute('id', 'showData' + currentSymbol);
         accordionDiv.classList.add('collapse');
         cell4.appendChild(accordionDiv);
-        accordionDiv.innerText = `Some info about ${currentSymbol} will go here.`;
-
+        accordionDiv.innerHTML = `Some info about ${currentSymbol} will go <a href='https://www.youtube.com/watch?v=iik25wqIuFo'>here</a>.`;
     }
     loadPriceColumn();
     loadPercentColumn(tickerArray);
+    // showMe();
 }
 
 var showPctChange = function(ticker){
@@ -112,18 +113,34 @@ var showPctChange = function(ticker){
             displayedPercentage.classList.add("table-success");
             displayedPercentage.previousSibling.classList.add("table-success");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-success");
-            momentumBadge.textContent = " ";
-            momentumBadge.classList.add("fab", "fa-gripfire")
-            momentumBadge.style.color="red";
+            if(changePercent > 10) {
+                momentumBadge.textContent = " ";
+                momentumBadge.classList.add("fab", "fa-gripfire")
+                momentumBadge.style.color="red";
+            }
         } else if(changePercent < -5){
             displayedPercentage.classList.add("table-danger");
             displayedPercentage.previousSibling.classList.add("table-danger");
             displayedPercentage.previousSibling.previousSibling.classList.add("table-danger");
-            momentumBadge.textContent = " ";
-            momentumBadge.classList.add("fas", "fa-cubes");
-            momentumBadge.style.color="blue";
-            
+            if(changePercent < -10){
+                momentumBadge.textContent = " ";
+                momentumBadge.classList.add("fas", "fa-cubes");
+                momentumBadge.style.color="blue";
+            }
         }
+    }
+    request.send();
+}
+
+
+//Working on this
+var showMe = function(){
+    var url = "https://api.cryptowat.ch/markets/kraken/adausd/summary";
+    var request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.onload = () => {
+        var jsonObj = JSON.parse(request.responseText);
+        console.log(readyState);
     }
     request.send();
 }
