@@ -1,10 +1,9 @@
 //to add tickers to the table, you have to update the array, add the stream, and add the case to the switch statement.
 
-var tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
-var arrayLength = tickerArray.length;
-var dataArray = [];
+const tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
+const arrayLength = tickerArray.length;
 
-let allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
+const allStreams = new WebSocket("wss://stream.binance.com:9443/ws/adausdt@trade/ethusdt@trade/btcusdt@trade/solusdt@trade/dogeusdt@trade/shibusdt@trade/manausdt@trade");
 
 function loadPriceColumn(){
   allStreams.onmessage = (event) => {
@@ -46,7 +45,7 @@ function loadPercentColumn(tickerArray){
 function generateRows(array, length){
     
     //get table element created in HTML document
-    var tableEL = document.getElementById("cryptoTable");
+    const tableEL = document.getElementById("cryptoTable");
     
     for (i = 0; i < length; i++){
         let currentSymbol = array[i];
@@ -68,7 +67,7 @@ function generateRows(array, length){
 
         //second column: price
         //price is loaded by loadPriceColumn() and uses this cell's id to insert the correct data
-        let cell2 = row1.insertCell();
+        const cell2 = row1.insertCell();
         cell2.setAttribute('id', currentSymbol.toLowerCase());
 
         //third column: percent change
@@ -76,31 +75,30 @@ function generateRows(array, length){
         cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
 
         //second row
-        let accordionRow = tableEL.insertRow();
+        const accordionRow = tableEL.insertRow();
         accordionRow.setAttribute('colspan', '3');
-        let cell4 = accordionRow.insertCell();
+        const cell4 = accordionRow.insertCell();
         cell4.setAttribute('id', 'cell4' + currentSymbol)
         cell4.setAttribute('colspan', '3');//make row all 3 columns
         cell4.style.padding = '0px'; //removes extra padding from the bootstrap css
         accordionRow.appendChild(cell4);
-        let accordionDiv = document.createElement('div');
+        const accordionDiv = document.createElement('div');
         accordionDiv.setAttribute('id', 'showData' + currentSymbol);
         accordionDiv.classList.add('collapse');
         cell4.appendChild(accordionDiv);
-        accordionDiv.innerHTML = `Some info about ${currentSymbol} will go <a href='https://www.youtube.com/watch?v=iik25wqIuFo'>here</a>.`;
+        accordionDiv.innerHTML = `Some info about ${currentSymbol} will go here.`;
     }
     loadPriceColumn();
     loadPercentColumn(tickerArray);
-    // showMe();
 }
 
-var showPctChange = function(ticker){
+    function showPctChange(ticker) {
     ticker = ticker.toUpperCase();
-    var baseUrl = "https://api.binance.com";
-    var query = "/api/v1/ticker/24hr";
+    const baseUrl = "https://api.binance.com";
+    const query = "/api/v1/ticker/24hr";
     query += "?symbol=" + ticker + "USDT";
-    var url = baseUrl + query;
-    var request = new XMLHttpRequest();
+    const url = baseUrl + query;
+    const request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.onload = () => {
         var jsonObj = JSON.parse(request.responseText);
@@ -128,19 +126,6 @@ var showPctChange = function(ticker){
                 momentumBadge.style.color="blue";
             }
         }
-    }
-    request.send();
-}
-
-
-//Working on this
-var showMe = function(){
-    var url = "https://api.cryptowat.ch/markets/kraken/adausd/summary";
-    var request = new XMLHttpRequest();
-    request.open("GET", url, true);
-    request.onload = () => {
-        var jsonObj = JSON.parse(request.responseText);
-        console.log(readyState);
     }
     request.send();
 }
