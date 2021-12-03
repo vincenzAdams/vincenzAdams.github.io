@@ -95,7 +95,7 @@ function generateRows(array, length){
     function showPctChange(ticker) {
     ticker = ticker.toUpperCase();
     const baseUrl = "https://api.binance.com";
-    const query = "/api/v1/ticker/24hr";
+    let query = "/api/v1/ticker/24hr";
     query += "?symbol=" + ticker + "USDT";
     const url = baseUrl + query;
     const request = new XMLHttpRequest();
