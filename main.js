@@ -1,5 +1,4 @@
 //to add tickers to the table, you have to update the array, add the stream, and add the case to the switch statement.
-
 const tickerArray = ["ADA", "ETH", "BTC", "SOL", "DOGE", "SHIB", "MANA"];
 const arrayLength = tickerArray.length;
 
@@ -59,15 +58,18 @@ function generateRows(array, length){
         //first column: badge and symbol
         let cell1 = row1.insertCell(); //<td>
         let badge = document.createElement('span');
+        let arrow = document.createElement('span');
+        arrow.classList.add('caret');
         badge.setAttribute('id', currentSymbol + 'badge');
-        cell1.appendChild(badge);
+        cell1.appendChild(arrow);
         let tickerSymbol = document.createElement('span');
-        tickerSymbol.innerText = ' ' + currentSymbol;
+        tickerSymbol.innerText = ' ' + currentSymbol + ' ';
         cell1.appendChild(tickerSymbol);
+        cell1.appendChild(badge);
 
         //second column: price
         //price is loaded by loadPriceColumn() and uses this cell's id to insert the correct data
-        const cell2 = row1.insertCell();
+        let cell2 = row1.insertCell();
         cell2.setAttribute('id', currentSymbol.toLowerCase());
 
         //third column: percent change
@@ -75,30 +77,40 @@ function generateRows(array, length){
         cell3.setAttribute('id', currentSymbol.toLowerCase() + 'PctChange');
 
         //second row
-        const accordionRow = tableEL.insertRow();
+        let accordionRow = tableEL.insertRow();
         accordionRow.setAttribute('colspan', '3');
-        const cell4 = accordionRow.insertCell();
+        let cell4 = accordionRow.insertCell();
         cell4.setAttribute('id', 'cell4' + currentSymbol)
         cell4.setAttribute('colspan', '3');//make row all 3 columns
         cell4.style.padding = '0px'; //removes extra padding from the bootstrap css
         accordionRow.appendChild(cell4);
-        const accordionDiv = document.createElement('div');
+        let accordionDiv = document.createElement('div');
         accordionDiv.setAttribute('id', 'showData' + currentSymbol);
         accordionDiv.classList.add('collapse');
         cell4.appendChild(accordionDiv);
-        accordionDiv.innerHTML = `Some info about ${currentSymbol} will go here.`;
+        accordionDiv.innerHTML = `Technical indicators for ${currentSymbol} will go here.`;
+
+        row1.addEventListener('click', function(){
+            if(!arrow.classList.contains('caret-up')){
+                arrow.classList.add('caret-up');
+            } else {
+                arrow.classList.remove('caret-up');
+            }
+        });
+        
     }
     loadPriceColumn();
     loadPercentColumn(tickerArray);
+    // showMe();
 }
 
-    function showPctChange(ticker) {
+function showPctChange(ticker) {
     ticker = ticker.toUpperCase();
-    const baseUrl = "https://api.binance.com";
-    let query = "/api/v1/ticker/24hr";
+    var baseUrl = "https://api.binance.com";
+    var query = "/api/v1/ticker/24hr";
     query += "?symbol=" + ticker + "USDT";
-    const url = baseUrl + query;
-    const request = new XMLHttpRequest();
+    var url = baseUrl + query;
+    var request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.onload = () => {
         var jsonObj = JSON.parse(request.responseText);
@@ -127,5 +139,26 @@ function generateRows(array, length){
             }
         }
     }
-    request.send();
+    request.send();        
 }
+
+// const showMe = function() {
+//     var currentTime = new Date();
+//     var timeISO = currentTime.toISOString();
+//     var baseUrl = 'https://rest.coinapi.io';
+//     var query = "/v1/quotes/BITSTAMP_SPOT_BTC_USD/history?time_start=2020-11-16T12:00:00&time_end=2020-11-16T12:00:01&limit=1";
+//     var query2 = "/v1/quotes/current?filter_symbol_id=BITSTAMP_SPOT_BTC_USD";
+//     var query3 = "/v1/quotes/BINANCE_SPOT_ADA_USDT/history?time_start=2020-11-16T12:00:00Z&limit=1";
+//     var url = baseUrl + query3;
+//     var apiKey = 'B5958F83-222D-4DE8-A5FF-C33C72D17059';
+//     var xhttp = new XMLHttpRequest();
+//     xhttp.open('GET', url, true);
+//     xhttp.setRequestHeader('X-CoinAPI-Key', apiKey);
+//     xhttp.onload = () => {
+//         var jsonObj = JSON.parse(xhttp.responseText);
+//         console.log(jsonObj);
+//     } 
+//     xhttp.send();
+// }
+
+//Working on this

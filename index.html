@@ -15,6 +15,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://static.cryptowat.ch/assets/scripts/embed.bundle.js"></script>
+    <style>
+        .caret.caret-up {
+    border-top-width: 0;
+    border-bottom: 4px solid black;
+  }
+    </style>
     <title>Price Change Table</title>
 </head>
 <body onload="generateRows(tickerArray, arrayLength)">
@@ -32,7 +38,7 @@
                     <th>Price (USD)</th>
                     <th>Percent Change (24hr)</th>
                  </tr>
-             </thead>
+             </thead>   
         </table>
     </div>
     <br><br>
