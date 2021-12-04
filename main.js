@@ -101,7 +101,6 @@ function generateRows(array, length){
     }
     loadPriceColumn();
     loadPercentColumn(tickerArray);
-    // showMe();
 }
 
 function showPctChange(ticker) {
@@ -141,24 +140,3 @@ function showPctChange(ticker) {
     }
     request.send();        
 }
-
-// const showMe = function() {
-//     var currentTime = new Date();
-//     var timeISO = currentTime.toISOString();
-//     var baseUrl = 'https://rest.coinapi.io';
-//     var query = "/v1/quotes/BITSTAMP_SPOT_BTC_USD/history?time_start=2020-11-16T12:00:00&time_end=2020-11-16T12:00:01&limit=1";
-//     var query2 = "/v1/quotes/current?filter_symbol_id=BITSTAMP_SPOT_BTC_USD";
-//     var query3 = "/v1/quotes/BINANCE_SPOT_ADA_USDT/history?time_start=2020-11-16T12:00:00Z&limit=1";
-//     var url = baseUrl + query3;
-//     var apiKey = 'B5958F83-222D-4DE8-A5FF-C33C72D17059';
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.open('GET', url, true);
-//     xhttp.setRequestHeader('X-CoinAPI-Key', apiKey);
-//     xhttp.onload = () => {
-//         var jsonObj = JSON.parse(xhttp.responseText);
-//         console.log(jsonObj);
-//     } 
-//     xhttp.send();
-// }
-
-//Working on this
