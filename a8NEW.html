@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="Populate List with Random Strings" id="btnPopulate"><br><br>
+    <input type="button" value="Sort with Insertion Sort" id="btnInsertion"><br><br>
+    <input type="button" value="Sort with Quick Sort" id="btnQuick"><br><br>
+    <input type="text" value="Enter Custom String" id="txt">
+    <input type="button" value="Insert String" id="btnCustom">
+    <p id="output"></p>
+    <p id="output2"></p>
+    <p id="output3"></p>
+    <p id="output4"></p>
+    <script>
+        class LinkedList {
+            constructor() {
+                this.length = 0;
+                this.head = this.tail = null;
+                return this;
+            }
+
+            append(_content) {
+                var node = new Node(_content);
+
+                if (this.head == null) {
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if (this.head == this.tail) {
+                    this.head.next = node;
+                    this.tail.prev = this.head;
+                    this.tail = node;
+                    this.length = 2;
+                    return node;
+                }
+
+                this.tail.next = node;
+                node.prev = this.tail;
+                this.tail = node;
+                this.length++;
+                return node;
+            }
+
+            prepend(_content){
+                var node = new Node(_content);
+
+                if(this.head == null){
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if(this.head == this.tail){
+                    this.head.prev = node;
+                    this.head.next = this.tail;
+                    this.head = node;
+                    this.length = 2;
+                    return node;
+                }
+
+                this.head.prev = node;
+                node.next = this.head;
+                this.head = node;
+                this.length++;
+                return node;
+            }
+
+            insert(_content) {
+                var node = new Node(_content);
+
+                if (this.head == null) {
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if (_content <= this.head.content) {
+                    this.head.prev = node;
+                    node.next = this.head;
+                    this.head = node;
+                    this.length++;
+                    return node;
+                }
+
+                var currentNode = this.head;
+                while (currentNode.next != null) {
+                    if ((_content >= currentNode.content) && (_content <= currentNode.next.content)) {
+                        node.prev = currentNode;
+                        node.next = currentNode.next;
+                        currentNode.next.prev = node;
+                        currentNode.next = node;
+                        this.length++;
+                        return node;
+                    }
+                    currentNode = currentNode.next;
+                }
+
+                if (_content >= this.tail.content) {
+                    node.next = null;
+                    node.prev = this.tail;
+                    this.tail.next = node;
+                    this.tail = node;
+                    this.length++;
+                    return node;
+                }
+                node.next = this.tail;
+                node.prev = this.tail.prev;
+                this.tail.prev = node;
+                this.length++;
+                return node;
+            }
+
+            show() {
+                        if (this.head == null) {
+                            return "Empty List";
+                        }
+                        var s = "";
+                        var node = this.head;
+                        while (node != null) {
+                            if (node.next == null) {
+                                s += node.content + ".";
+                                node = node.next;
+                            } else {
+                                s += node.content + ", ";
+                                node = node.next;
+                            }
+
+                        }
+                        return s;
+                    }
+                }
+
+                class Node {
+                    constructor(_content) {
+                        this.content = _content;
+                        this.next = null;
+                        this.prev = null;
+                        return this;
+                    }
+                }
+
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var output1 = document.getElementById("output");
+                var output2 = document.getElementById("output2");
+                var output3 = document.getElementById("output3");
+                var output4 = document.getElementById("output4");
+                var ll1 = new LinkedList(); 
+                var ll2 = new LinkedList();
+
+                //POPULATE BUTTON
+                document.getElementById("btnPopulate").onclick = () => {
+                    output1.innerHTML = "<h4>List populated with the following random strings:</h4> " + populateList1(20, 5).show();
+                    output2.innerHTML = "";
+                }
+
+                //INSERTION SORT BUTTON
+                document.getElementById("btnInsertion").onclick = () => {
+                    if (ll1.head == null) {
+                        output2.innerHTML = "Please populate the list first.";
+                        return null;
+                    }
+                    output2.innerHTML = "<h4>List sorted using Insertion Sort:</h4> " + insertionSort(ll1).show();
+                }
+
+                //QUICK SORT BUTTON
+                document.getElementById("btnQuick").onclick = () => {
+                    if (ll1.head == null) {
+                        output3.innerHTML = "Please populate the list first.";
+                        return null;
+                    }
+                    output3.innerHTML = "<h4>List sorted using Quick Sort:</h4> " + quickSort(ll1).show();
+                }
+
+                //INSERT CUSTOM STRING BUTTON
+                document.getElementById("btnCustom").onclick = () => {
+                    if (ll1.head == null) {
+                        output4.innerHTML = "Please populate the list first.";
+                        return null;
+                    }
+                    var customString = document.getElementById("txt").value;
+                    ll2.insert(customString);
+                    output4.innerHTML = "<h4>List with custom string inserted in the correct sorted position:</h4> " + ll2.show();
+                }
+
+                //INSERTION SORT FUNCTION
+                function insertionSort(list) {
+                    ll2 = new LinkedList();
+                    var currentNode = list.head;
+                    while (currentNode != null) {
+                        ll2.insert(currentNode.content);
+                        currentNode = currentNode.next;
+                    }
+                    return ll2;
+                }
+
+                //GENERATE RANDOM STRING FUNCTION
+                function randomString(length) {
+                    var result = "";
+                    var charsLength = chars.length;
+                    for (var i = 0; i < length; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * charsLength));
+                    }
+                    return result;
+                }
+
+                //POPULATE LIST 
+                function populateList1(listLength, lengthOfString) {
+                    ll1 = new LinkedList();
+                    for (var i = 0; i < listLength; i++) {
+                        ll1.append(randomString(lengthOfString));
+                    }
+                    return ll1;
+                }
+
+                //QUICK SORT FUNCTION
+                function quickSort(list) {
+                        if (list.length == 1) {
+                            return list;
+                        }
+                    
+                    var currentNode = list.head;
+                        var leftList = new LinkedList();
+                        var rightList = new LinkedList();
+                        var pivot = list.tail;
+
+                        while (currentNode.next != null) {
+                            if (currentNode.content < pivot.content) {
+                                leftList.append(currentNode.content);
+                                currentNode = currentNode.next;
+                            } else {
+                                rightList.append(currentNode.content);
+                                currentNode = currentNode.next;
+                            }
+                        }
+                        
+                        if (leftList.length > 0 && rightList.length == 0) {
+                            var pivotList = new LinkedList();
+                            pivotList.append(pivot.content);
+                            return mergeLists(quickSort(leftList), pivotList);
+                        } else if (leftList.length == 0 && rightList.length > 0) {
+                            var pivotList = new LinkedList();
+                            pivotList.append(pivot.content);
+                            return mergeLists(pivotList, quickSort(rightList));
+                        } else {
+                            var pivotList = new LinkedList();
+                            pivotList.append(pivot.content);
+                            return mergeLists(mergeLists(quickSort(leftList), pivotList), quickSort(rightList));
+                        }
+                    }
+
+                    //HELPER FUNCTION TO MERGE LINKED LISTS IN LEFT TO RIGHT ORDER
+                    function mergeLists(list1, list2){
+                        var newList = new LinkedList();
+                        var currentNode = list1.head;
+                        while (currentNode != null) {
+                            newList.append(currentNode.content);
+                            currentNode = currentNode.next;
+                        }
+                        currentNode = list2.head;
+                        while (currentNode != null) {
+                            newList.append(currentNode.content);
+                            currentNode = currentNode.next;
+                        }
+
+                        newList.length = list1.length + list2.length;
+                        return newList;
+                    }
+
+    </script>
+        
+    
+</body>
+</html>
