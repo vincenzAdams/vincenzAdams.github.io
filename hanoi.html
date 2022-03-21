@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h4{
+            border-style: inset;
+            border-color: lightblue;
+            background-color: lightblue;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Tower of Hanoi</h3>
+    <p>The left-most number in the stack list is the head, or the bottom of the stack, the right-most number in the stack is the tail, or the top of the stack.</p>
+    <p>The larger numbers correspond to the larger disks.<br>Any decimals will be rounded to the nearest integer, so just input an integer.</p>
+    <br>
+    <input id="input" type="number"><input id="button" type="button" value="Submit">
+    <p id="output"></p>
+    <script>
+        class Node {
+                constructor(_content) {
+                    this.content = _content;
+                    this.next = null;
+                    this.prev = null;
+                    return this;
+                }
+            }
+
+            class Stack {
+                constructor(_name) {
+                    this.head = this.top = null;
+                    this.length = 0;
+                    this.name = _name;
+                }
+
+                push(_content) {
+                    if (this.head == null) {
+                        this.head = this.top = new Node(_content);
+                        // this.top = this.head;
+                        this.length = 1;
+                        return this;
+                    }
+                    var pushedNode = new Node(_content);
+                    pushedNode.prev = this.top;
+                    this.top.next = pushedNode;
+                    this.top = pushedNode;
+                    this.length++;
+                    return this;
+                }
+
+                pop() {
+                    if (this.head == null) {
+                        this.length = 0;
+                        return null;
+                    }
+
+                    if (this.head == this.top) {
+                        var popped = this.head;
+                        this.head = this.top = null;
+                        this.length = 0;
+                        return popped;
+                    }
+
+                    var poppedNode = this.top;
+                    this.top = this.top.prev;
+                    this.top.next = null;
+                    this.length--;
+                    return poppedNode;
+                }
+
+                toString() {
+                    var result = "";
+                    var node = this.head;
+
+                    while (node != null) {
+                        result += node.content + " ";
+                        node = node.next;
+                    }
+
+                    return result;
+                }
+
+                peek() {
+                    if (this.head == null) {
+                        return null;
+                    }
+                    return this.top.content;
+                }
+            }
+
+            var steps = 0;
+            document.getElementById("button").onclick = () => {
+                steps = 0;
+                var stack1 = new Stack("Stack 1");
+                var stack2 = new Stack("Stack 2");
+                var stack3 = new Stack("Stack 3");
+                var input = parseInt(document.getElementById("input").value);
+                var output = document.getElementById("output");
+
+                if (input < 1 || input > 7) {
+                    document.getElementById("input").value = "";
+                    output.innerHTML = "Please choose a value greater than 0 and less than 7.";
+                } else {
+                    output.innerHTML = "";
+                    for (var i = input; i >= 1; i--) {
+                        stack1.push(i);
+                    }
+                    output.innerHTML = "Stack 1 before TOH: " + stack1.toString() + "<br>";
+                    output.innerHTML += "Stack 2 before TOH: " + stack2.toString() + "<br>";
+                    output.innerHTML += "Stack 3 before TOH: " + stack3.toString() + "<br><br>";
+                    solveTOH(input, stack1, stack3, stack2);
+                    output.innerHTML += "<br>Stack 1 after TOH: " + stack1.toString() + "<br>";
+                    output.innerHTML += "Stack 2 after TOH: " + stack2.toString() + "<br>";
+                    output.innerHTML += "Stack 3 after TOH: " + stack3.toString() + "<br>";
+                    output.innerHTML += "<h4>Tower of Hanoi completed in " + steps + " steps. (2^" + input + "-1 = " + steps + ").<br><br>The complexity is O(2^n).<br><br>It would take roughly 585 billion years to complete the Tower of Hanoi with 64 disks if each step takes 1 second to complete. <br><br>That is roughly 42 times longer than the estimated age of our universe.</h4>";
+                }
+            }
+
+            function solveTOH(disks, source, dest, aux) {
+                if (disks == 1) {
+                    steps++;
+                    output.innerHTML += moveDisk(source, dest) + "<br>";
+                } else {
+                    solveTOH(disks - 1, source, aux, dest);
+                    steps++;
+                    output.innerHTML += moveDisk(source, dest) + "<br>";
+                    solveTOH(disks - 1, aux, dest, source);
+                }
+            }
+
+            function moveDisk(source, dest) {
+                var diskNumber = source.pop().content;
+                dest.push(diskNumber);
+                return "Move " + steps + ": Disk " + diskNumber + " moved to " + dest.name + "<br>";
+            }
+
+    </script>
+
+</body>
+</html>

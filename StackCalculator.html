@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="input">
+    <input type="button" id="btn" value="Push to Stack">
+    <p id="output"></p>
+    <p id="output2"></p>
+
+    <script>
+        class LinkedList {
+                constructor() {
+                    this.length = 0;
+                    this.head = this.tail = null;
+                    return this;
+                }
+
+                append(_content) {
+                    var node = new Node(_content);
+                    if (this.head == null) {
+                        this.head = this.tail = node;
+                        this.length = 1;
+                        node.id = this.length;
+                        return node;
+                    }
+
+                    this.tail.next = node;
+                    node.prev = this.tail;
+                    this.tail = node;
+                    this.length++;
+                    node.id = this.length;
+                    return node;
+                }
+
+                show() {
+                    if (this.head == null) {
+                        return "No List";
+                    }
+                    var showText = "";
+                    var node = this.head;
+                    while (node != null) {
+                        showText += "Content: " + node.content + "<br>ID: " + node.id + "<br><br>";
+                        node = node.next;
+                    }
+                    showText += "Length of Linked List: " + list.length;
+                    return showText;
+                }
+            }
+
+            class Node {
+                constructor(_content) {
+                    this.content = _content;
+                    this.next = null;
+                    this.prev = null;
+                    return this;
+                }
+            }
+
+            class Stack {
+                constructor() {
+                    this.head = this.top = null;
+                    this.length = 0;
+                }
+
+                push(_content) {
+                    if (this.head == null) {
+                        this.head = new Node(_content);
+                        this.top = this.head;
+                        this.length = 1;
+                        return this;
+                    }
+
+                    var pushedNode = new Node(_content);
+                    pushedNode.prev = this.top;
+                    this.top.next = pushedNode;
+                    this.top = pushedNode;
+                    this.length++;
+                    return this;
+                }
+
+                pop() {
+                    if (this.head == null) {
+                        this.length = 0;
+                        return null;
+                    }
+
+                    if (this.head == this.top) {
+                        var poppedNode = this.top;
+                        this.length--;
+                        this.head = this.top = null;
+                        return poppedNode;
+                    }
+
+                    var poppedNode = this.top;
+                    this.top = this.top.prev;
+                    this.top.next = null;
+                    this.length--;
+
+                    return poppedNode;
+                }
+
+                toString() {
+                    var result = "";
+                    var node = this.head;
+
+                    while (node != null) {
+                        result += node.content + " ";
+                        node = node.next;
+                    }
+
+                    return result;
+                }
+            }
+
+            var stack = new Stack();
+            var button = document.getElementById("btn");
+            var pattern = /^[0-9\/\*\+\-]*$/
+
+            button.addEventListener("click", () => {
+                var input = document.getElementById("input").value;
+                var output = document.getElementById("output");
+                var err1 = "Must have 2 operands in stack to push an operator.";
+                if (input.match(pattern) && input != "") {
+                    switch (input) {
+                        case "+":
+                            if (stack.length < 2) {
+                                output.innerHTML = err1;
+                                break;
+                            } else {
+                                let num1 = parseFloat(stack.pop().content);
+                                let num2 = parseFloat(stack.pop().content);
+                                let ans = parseFloat(num2 + num1);
+                                stack.push(ans);
+                                break;
+                            }
+                        case "-":
+                            if (stack.length < 2) {
+                                output.innerHTML = err1;
+                                break;
+                            } else {
+                                let num3 = parseFloat(stack.pop().content);
+                                let num4 = parseFloat(stack.pop().content);
+                                stack.push(num4 - num3);
+                                break;
+                            }
+                        case "*":
+                            if (stack.length < 2) {
+                                output.innerHTML = err1;
+                                break;
+                            } else {
+                                let num5 = parseFloat(stack.pop().content);
+                                let num6 = parseFloat(stack.pop().content);
+                                stack.push(num6 * num5);
+                                break;
+                            }
+                        case "/":
+                            if (stack.length < 2) {
+                                output.innerHTML = err1;
+                                break;
+                            } else {
+                                let num7 = parseFloat(stack.pop().content);
+                                let num8 = parseFloat(stack.pop().content);
+                                if (num8 === 0) {
+                                    document.getElementById("input").value = "";
+                                    output.innerHTML = "Try again, cannot divide by 0.";
+                                    break;
+                                }
+                                stack.push(num7 / num8);
+                                break;
+                            }
+                        default:
+                            stack.push(input);
+                            output.innerHTML = "";
+                            break;
+                    }
+                    console.log(stack.length);
+                } else {
+                    document.getElementById("input").value = "";
+                    output.innerHTML = "Try again";
+                }
+                document.getElementById("output2").innerHTML = stack.toString();
+            })
+
+    </script>
+</body>
+</html>
