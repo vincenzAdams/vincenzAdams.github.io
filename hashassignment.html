@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td{
+            border: 2px solid;
+            text-align: center;
+            padding: 10px;
+        }
+
+        th{
+            padding: 10px;
+            border: 2px solid;
+            text-align: center;
+            background-color: lightgrey;
+        }
+
+        kbd{
+            border: 1px solid;
+            text-align: center;
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="phrase" value="Enter Phrase">
+    <input type="button" id="btnPhrase" value="Compress"><br><br>
+    <div id="output"></div>
+    <script>
+        //HASHTABLE CLASS  -----
+        class HashTable {
+            constructor(phrase){
+                this.phraseArray = phrase.split(" ");
+                this.phraseLength = this.phraseArray.length;
+                this.table = new Array(this.phraseLength);
+                this.parsePhrase();
+            }
+
+            parsePhrase(){
+                 for(var i = 0; i < this.phraseLength; i++){
+                     this.add(this.phraseArray[i], i + 1);
+                 }
+                 return this.phraseArray;
+            }
+
+            add(word, position){
+                var index = 0;
+                for(var i = 0; i < word.length; i++){
+                    index += word.charCodeAt(i);
+                }
+                index = index % this.table.length;
+                if(this.table[index] == undefined){
+                    var ll = new LinkedList();
+                    ll.append(word);
+                    ll.append(position);
+                    this.table[index] = ll;
+                } else {
+                        // if(currentNode.content == word){
+                        //     this.table[index].append(position);
+                        //     return word;
+                        // } else {
+                            this.table[index].append(word);
+                            this.table[index].append(position);
+                            // return word;
+                        // }
+                }
+                return word;
+            }
+
+        }
+
+        //LINKEDLIST CLASS
+        class LinkedList {
+            constructor() {
+                this.length = 0;
+                this.head = this.tail = null;
+                return this;
+            }
+
+            append(_content) {
+                var node = new Node(_content);
+
+                if (this.head == null) {
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if (this.head == this.tail) {
+                    this.head.next = node;
+                    this.tail.prev = this.head;
+                    this.tail = node;
+                    this.length = 2;
+                    return node;
+                }
+
+                this.tail.next = node;
+                node.prev = this.tail;
+                this.tail = node;
+                this.length++;
+                return node;
+            }
+
+            prepend(_content) {
+                var node = new Node(_content);
+
+                if (this.head == null) {
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if (this.head == this.tail) {
+                    this.head.prev = node;
+                    this.head.next = this.tail;
+                    this.head = node;
+                    this.length = 2;
+                    return node;
+                }
+
+                this.head.prev = node;
+                node.next = this.head;
+                this.head = node;
+                this.length++;
+                return node;
+            }
+
+            insert(_content) {
+                var node = new Node(_content);
+
+                if (this.head == null) {
+                    this.head = this.tail = node;
+                    this.length = 1;
+                    return node;
+                }
+
+                if (_content <= this.head.content) {
+                    this.head.prev = node;
+                    node.next = this.head;
+                    this.head = node;
+                    this.length++;
+                    return node;
+                }
+
+                var currentNode = this.head;
+                while (currentNode.next != null) {
+                    if ((_content >= currentNode.content) && (_content <= currentNode.next.content)) {
+                        node.prev = currentNode;
+                        node.next = currentNode.next;
+                        currentNode.next.prev = node;
+                        currentNode.next = node;
+                        this.length++;
+                        return node;
+                    }
+                    currentNode = currentNode.next;
+                }
+
+                if (_content >= this.tail.content) {
+                    node.next = null;
+                    node.prev = this.tail;
+                    this.tail.next = node;
+                    this.tail = node;
+                    this.length++;
+                    return node;
+                }
+                node.next = this.tail;
+                node.prev = this.tail.prev;
+                this.tail.prev = node;
+                this.length++;
+                return node;
+            }
+
+            show() {
+                if (this.head == null) {
+                    return "Empty List";
+                }
+                var s = "";
+                var node = this.head;
+                while (node != null) {
+                    if (node.next == null) {
+                        s += node.content + ".";
+                        node = node.next;
+                    } else {
+                        s += node.content + ", ";
+                        node = node.next;
+                    }
+
+                }
+                return s;
+            }
+        }
+
+        //NODE CLASS
+        class Node {
+            constructor(_content) {
+                this.content = _content;
+                this.next = null;
+                this.prev = null;
+                return this;
+            }
+        }
+        //-----------------------------------------------------------------------------
+        var button = document.getElementById("btnPhrase");
+        button.onclick = ()=>{
+            output.innerHTML = " ";
+            var phrase = document.getElementById("phrase").value;
+            var hash = new HashTable(phrase);
+            var words = [];
+            buildTable(hash.phraseArray);
+            for(var i = 0; i < hash.phraseArray.length; i++){
+                
+                var currentWord = hash.phraseArray[i];
+                var index = 0;
+                for(var j = 0; j < currentWord.length; j++){
+                    index += currentWord.charCodeAt(j);
+                }
+                index = index % hash.table.length;
+                if(hash.table[index] != undefined){
+                    var currentNode = hash.table[index].head;
+                    while(currentNode != null){
+                        if(currentNode.content == currentWord && !words.includes(currentWord)){
+                            var cell = document.getElementById("cell" + currentWord);
+                            var cellContent = document.createElement("span");
+                            cellContent.innerHTML = "<kbd>" + currentNode.next.content + "</kbd>";
+
+                            cell.appendChild(cellContent);
+                        }
+                        currentNode = currentNode.next;
+                    }
+                }
+                words.push(hash.phraseArray[i]);
+            }
+            
+        }
+
+        function buildTable(phraseArray){
+            var arrayLength = phraseArray.length;
+            var div = document.getElementById("output");
+            var table = document.createElement("table");
+            var tableBody = document.createElement("tbody");
+            var headerRow = document.createElement("tr");
+            var tableHeader1 = document.createElement("th");
+            var tableHeader2 = document.createElement("th");
+            var header1content = document.createTextNode("Word");
+            var header2content = document.createTextNode("Position of Occurrence");
+            tableHeader1.appendChild(header1content);
+            tableHeader2.appendChild(header2content);
+            headerRow.appendChild(tableHeader1);
+            headerRow.appendChild(tableHeader2);
+            table.appendChild(headerRow);
+            table.appendChild(tableBody);
+            div.appendChild(table);
+            for(var i = 0; i < arrayLength; i++){
+                if(document.getElementById("cell" + phraseArray[i]) == null){
+                    var tableRow = document.createElement("tr");
+                    for(var j = 0; j < 2; j++){
+                        if(j == 0){
+                            var cell = document.createElement("td");
+                            var cellContent = document.createTextNode(phraseArray[i]);
+                            cell.appendChild(cellContent);
+                            tableRow.appendChild(cell);
+                        } else {
+                            var cell = document.createElement("td");
+                            cell.id = "cell" + phraseArray[i];
+                            tableRow.appendChild(cell);
+                        }
+                    }
+                } else {
+                    continue;
+                }
+                tableBody.appendChild(tableRow);
+            }
+        }
+        
+    </script>
+</body>
+</html>
